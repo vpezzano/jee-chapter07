@@ -8,6 +8,7 @@ import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
 
+import ejb.BookEJBNoView;
 import model.Book;
 import model.BookLocal;
 import model.BookLocalLegacy;
@@ -44,6 +45,11 @@ public class Main {
 		BookLocalLegacy bookLocalLegacy = (BookLocalLegacy) ctx
 				.lookup("java:global/classes/BookEJBLegacy!model.BookLocalLegacy");
 		System.out.println("Using legacy interfaces, found: " + bookLocalLegacy.findBookById(book.getId()));
+
+		// Here we are using a Session Bean with no-interface view
+		BookEJBNoView bookEJBNoView = (BookEJBNoView) ctx
+				.lookup("java:global/classes/BookEJBNoView!ejb.BookEJBNoView");
+		System.out.println("Using no-interface session bean, found: " + bookEJBNoView.findBookById(book.getId()));
 		
 		System.exit(0);
 	}
