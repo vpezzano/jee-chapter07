@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
+<!-- https://stuetzpunkt.wordpress.com/2014/01/06/create-jdbc-resources-on-glassfish-4-with-glassfish-resources-xml 
+	https://mehmetceliksoy.wordpress.com/2011/08/18/glassfishapplication-scoped-resources -->
+<resources>
+	<jdbc-connection-pool
+		connection-validation-method="auto-commit"
+		datasource-classname="com.mysql.cj.jdbc.MysqlDataSource"
+		name="mysql_net_db_appPool" res-type="javax.sql.DataSource">
+		<property name="user" value="root" />
+		<property name="password" value="root" />
+		<property name="url"
+			value="jdbc:mysql://localhost:3306/spring-jpa" />
+	</jdbc-connection-pool>
+	<jdbc-resource enabled="true"
+		jndi-name="java:app/jdbc/mysqldb" object-type="user"
+		pool-name="mysql_net_db_appPool" />
+</resources>
