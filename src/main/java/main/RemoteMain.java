@@ -8,7 +8,7 @@ import java.util.Properties;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
-import model.ItemRemote;
+import model.BookRemote;
 
 public class RemoteMain {
 	public static void main(String[] args) throws FileNotFoundException, IOException, NamingException {
@@ -16,8 +16,8 @@ public class RemoteMain {
 			Properties props = new Properties();
 			props.load(jndi);
 			InitialContext ctx = new InitialContext(props);
-			ItemRemote itemRemote = (ItemRemote) ctx.lookup("model.ItemRemote");
-			System.out.println(itemRemote.getRemoteMessage());
+			BookRemote bookRemote = (BookRemote) ctx.lookup("model.BookRemote");
+			System.out.println(bookRemote.getRemoteMessage());
 		}
 	}
 }

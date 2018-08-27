@@ -8,14 +8,14 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 import model.Book;
-import model.ItemLocal;
-import model.ItemRemote;
+import model.BookLocal;
+import model.BookRemote;
 
 /*
  * Session beans can be transactional. 
 */
 @Stateless
-public class BookEJB implements ItemLocal, ItemRemote {
+public class BookEJB implements BookLocal, BookRemote {
 	@PersistenceContext(unitName = "chapter07PU")
 	private EntityManager em;
 

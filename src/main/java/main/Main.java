@@ -9,8 +9,8 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 
 import model.Book;
-import model.ItemLocal;
-import model.ItemRemote;
+import model.BookLocal;
+import model.BookRemote;
 
 public class Main {
 	/*
@@ -25,14 +25,14 @@ public class Main {
 		properties.put(EJBContainer.MODULES, new File("target/classes"));
 		EJBContainer ec = EJBContainer.createEJBContainer(properties);
 		Context ctx = ec.getContext();
-		// The interface ItemLocal is to be used for clients running inside the
+		// The interface BookLocal is to be used for clients running inside the
 		// container. In this case, arguments to methods can be passed by reference.
-		ItemLocal itemLocal = (ItemLocal) ctx.lookup("java:global/classes/BookEJB!model.ItemLocal");
+		BookLocal bookLocal = (BookLocal) ctx.lookup("java:global/classes/BookEJB!model.BookLocal");
 		Book book = new Book("Java 8", 50f, "Java 8 main features", "1234-ABCD", 300, true);
-		itemLocal.createBook(book);
-		System.out.println(itemLocal.findBookById(book.getId()));
-		ItemRemote itemRemote = (ItemRemote) ctx.lookup("java:global/classes/BookEJB!model.ItemRemote");
-		System.out.println(itemRemote.getRemoteMessage());
+		bookLocal.createBook(book);
+		System.out.println("Found: " + bookLocal.findBookById(book.getId()));
+		BookRemote bookRemote = (BookRemote) ctx.lookup("java:global/classes/BookEJB!model.BookRemote");
+		System.out.println("Remote message: " + bookRemote.getRemoteMessage());
 		System.exit(0);
 	}
 }
