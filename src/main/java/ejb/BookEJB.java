@@ -12,7 +12,7 @@ import model.ItemLocal;
 import model.ItemRemote;
 
 /*
- * Session beans are transactional. 
+ * Session beans can be transactional. 
 */
 @Stateless
 public class BookEJB implements ItemLocal, ItemRemote {
