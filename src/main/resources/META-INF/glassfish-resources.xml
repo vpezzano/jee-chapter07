@@ -13,6 +13,6 @@
 			value="jdbc:mysql://localhost:3306/spring-jpa" />
 	</jdbc-connection-pool>
 	<jdbc-resource enabled="true"
-		jndi-name="java:app/jdbc/mysqldb" object-type="user"
+		jndi-name="jdbc/mysqldb" object-type="user"
 		pool-name="mysql_net_db_appPool" />
 </resources>

@@ -20,6 +20,8 @@ public class RemoteMain {
 			BookRemote bookRemote = (BookRemote) ctx.lookup("java:global/chapter07/BookEJB!model.BookRemote");
 			System.out.println("Using portable JNDI name: " + bookRemote.getRemoteMessage());
 
+			System.out.println("Using portable JNDI name: " + bookRemote.findAllBooks());
+			
 			// The following uses a non portable JNDI name,
 			// Glassfish-specific. Favor the previous one
 			BookRemote bookRemoteNonPortable = (BookRemote) ctx.lookup("model.BookRemote");
@@ -30,6 +32,8 @@ public class RemoteMain {
 			BookRemoteLegacy bookRemoteLegacy = (BookRemoteLegacy) ctx
 					.lookup("java:global/chapter07/BookEJBLegacy!model.BookRemoteLegacy");
 			System.out.println("Using legacy interfaces: " + bookRemoteLegacy.getRemoteMessage());
+			
+			
 		}
 	}
 }
