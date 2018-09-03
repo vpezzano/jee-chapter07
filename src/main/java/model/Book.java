@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Version;
 import javax.persistence.GeneratedValue;
@@ -13,9 +14,11 @@ import javax.persistence.GeneratedValue;
  * SHOW CREATE TABLE <tablename>.
  */
 @Entity
-@NamedQuery(name = Book.FIND_ALL, query = "SELECT b FROM model.Book b")
+@NamedQueries({ @NamedQuery(name = Book.FIND_ALL, query = "SELECT b FROM model.Book b"),
+		@NamedQuery(name = Book.FIND_BY_TITLE, query = "SELECT b FROM model.Book b WHERE b.title = :title") })
 public class Book implements Serializable {
 	public static final String FIND_ALL = "Book.findAll";
+	public static final String FIND_BY_TITLE = "Book.findByTitle";
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue()

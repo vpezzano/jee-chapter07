@@ -2,6 +2,7 @@ package main;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.ejb.embeddable.EJBContainer;
@@ -9,6 +10,7 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 
 import ejb.BookEJBNoView;
+import ejb.CacheEJB;
 import model.Book;
 import model.BookLocal;
 import model.BookLocalLegacy;
@@ -32,7 +34,7 @@ public class Main {
 		// The interface BookLocal is to be used for clients running in the same VM as
 		// the container. In this case, arguments to methods can be passed by reference
 		BookLocal bookLocal = (BookLocal) ctx.lookup("java:global/classes/BookEJB!model.BookLocal");
-		Book book = new Book("Java 8", 50f, "Java 8 main features", "1234-ABCD", 300, true);
+		Book book = new Book("Java 8", 50f, "Java 8 main features, edition", "1234-ABCD", 300, true);
 		bookLocal.createBook(book);
 		System.out.println("Found: " + bookLocal.findBookById(book.getId()));
 
@@ -50,6 +52,13 @@ public class Main {
 		BookEJBNoView bookEJBNoView = (BookEJBNoView) ctx
 				.lookup("java:global/classes/BookEJBNoView!ejb.BookEJBNoView");
 		System.out.println("Using no-interface session bean, found: " + bookEJBNoView.findBookById(book.getId()));
+		
+		List<Book> booksByTitle = bookLocal.findBookByTitle("H2G2");
+		CacheEJB cacheEJB = (CacheEJB) ctx
+				.lookup("java:global/classes/CacheEJB!ejb.CacheEJB");
+		if (!booksByTitle.isEmpty()) {
+			System.out.println("Got from cache: " + cacheEJB.getFromCache(booksByTitle.get(0).getId()));
+		}
 		
 		System.exit(0);
 	}

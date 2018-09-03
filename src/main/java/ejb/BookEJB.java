@@ -26,6 +26,13 @@ public class BookEJB implements BookLocal, BookRemote {
 	}
 
 	@Override
+	public List<Book> findBookByTitle(String title) {
+		TypedQuery<Book> query = em.createNamedQuery(Book.FIND_BY_TITLE, Book.class);
+		query.setParameter("title", title);
+		return query.getResultList();
+	}
+	
+	@Override
 	public Book createBook(Book book) {
 		em.persist(book);
 		return book;
@@ -42,4 +49,6 @@ public class BookEJB implements BookLocal, BookRemote {
 		System.out.println("Invoking the method getRemoteMessage().");
 		return "Hello World!";
 	}
+
+	
 }
