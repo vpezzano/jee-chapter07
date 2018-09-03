@@ -10,6 +10,8 @@ import javax.naming.NamingException;
 
 import model.BookRemote;
 import model.BookRemoteLegacy;
+import model.Item;
+import model.ItemRemote;
 
 public class RemoteMain {
 	public static void main(String[] args) throws FileNotFoundException, IOException, NamingException {
@@ -33,6 +35,18 @@ public class RemoteMain {
 					.lookup("java:global/chapter07/BookEJBLegacy!model.BookRemoteLegacy");
 			System.out.println("Using legacy interfaces: " + bookRemoteLegacy.getRemoteMessage());
 			
+			ItemRemote itemRemote = (ItemRemote) ctx.lookup("java:global/chapter07/ItemEJB!model.ItemRemote");
+			
+			Item item1 = new Item("Item1", "This is item1", 10f);
+			itemRemote.addItem(item1);
+			
+			Item item2 = new Item("Item2", "This is item2", 20f);
+			itemRemote.addItem(item2);
+			
+			System.out.println(itemRemote.getNumberOfItems() + " items currently in the basket: " + itemRemote.getItems());
+			System.out.println("Price: " + itemRemote.getTotal());
+			
+			itemRemote.checkout();
 			
 		}
 	}
