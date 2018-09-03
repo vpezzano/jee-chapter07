@@ -11,7 +11,16 @@ import javax.ejb.StatefulTimeout;
 import model.Item;
 import model.ItemRemote;
 
+/*
+ * A JTA transaction is controlled by the Java EE transaction manager. In a stateful session bean with 
+ * a JTA transaction, the association between the bean instance and the transaction is retained across
+ * multiple client calls. Even if each business method called by the client opens and closes the database
+ * connection, the association is retained until the instance completes the transaction. In a stateless
+ * session bean with bean-managed transactions, a business method must commit or roll back a transaction
+ * before returning. However, a stateful session bean does not have this restriction.
+ */
 @Stateful
+// Retain an idle EJB for the time specified here
 @StatefulTimeout(value = 60, unit = TimeUnit.SECONDS)
 public class ItemEJB implements ItemRemote {
 	private List<Item> cartItems = new ArrayList<>();
