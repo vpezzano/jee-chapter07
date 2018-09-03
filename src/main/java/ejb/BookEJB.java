@@ -12,7 +12,8 @@ import model.BookLocal;
 import model.BookRemote;
 
 /*
- * Stateless session beans are transactional. 
+ * Stateless session beans are transactional. Such a bean doesn't have associated client state,
+ * but it may preserve its instance state.
 */
 @Stateless
 public class BookEJB implements BookLocal, BookRemote {

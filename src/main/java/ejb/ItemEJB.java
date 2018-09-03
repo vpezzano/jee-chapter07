@@ -12,7 +12,7 @@ import model.Item;
 import model.ItemRemote;
 
 @Stateful
-@StatefulTimeout(value = 20, unit = TimeUnit.SECONDS)
+@StatefulTimeout(value = 60, unit = TimeUnit.SECONDS)
 public class ItemEJB implements ItemRemote {
 	private List<Item> cartItems = new ArrayList<>();
 
