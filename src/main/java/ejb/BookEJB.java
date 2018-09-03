@@ -12,7 +12,7 @@ import model.BookLocal;
 import model.BookRemote;
 
 /*
- * Session beans can be transactional. 
+ * Stateless session beans are transactional. 
 */
 @Stateless
 public class BookEJB implements BookLocal, BookRemote {
@@ -32,7 +32,7 @@ public class BookEJB implements BookLocal, BookRemote {
 
 	@Override
 	public List<Book> findAllBooks() {
-		TypedQuery<Book> query = em.createQuery("SELECT b FROM model.Book b", Book.class);
+		TypedQuery<Book> query = em.createNamedQuery(Book.FIND_ALL, Book.class);
 		return query.getResultList();
 	}
 

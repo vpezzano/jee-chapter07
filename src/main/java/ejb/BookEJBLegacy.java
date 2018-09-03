@@ -39,7 +39,7 @@ public class BookEJBLegacy implements BookLocalLegacy, BookRemoteLegacy {
 
 	@Override
 	public List<Book> findAllBooks() {
-		TypedQuery<Book> query = em.createQuery("SELECT b FROM model.Book b", Book.class);
+		TypedQuery<Book> query = em.createNamedQuery(Book.FIND_ALL, Book.class);
 		return query.getResultList();
 	}
 
