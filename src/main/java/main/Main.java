@@ -12,11 +12,11 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 
 import ejb.BookEJBNoView;
-import ejb.CacheEJB;
 import model.Book;
 import model.BookLocal;
 import model.BookLocalLegacy;
 import model.BookRemote;
+import model.CacheLocal;
 
 public class Main {
 	/*
@@ -57,13 +57,13 @@ public class Main {
 		System.out.println("Using no-interface session bean, found: " + bookEJBNoView.findBookById(book.getId()));
 		
 		List<Book> booksByTitle = bookLocal.findBookByTitle("H2G2");
-		CacheEJB cacheEJB = (CacheEJB) ctx
-				.lookup("java:global/classes/CacheEJB!ejb.CacheEJB");
+		CacheLocal cacheLocal = (CacheLocal) ctx
+				.lookup("java:global/classes/CacheEJB!model.CacheLocal");
 		if (!booksByTitle.isEmpty()) {
-			System.out.println("Got from cache: " + cacheEJB.getFromCache(booksByTitle.get(0).getId()));
+			System.out.println("Got from cache: " + cacheLocal.getFromCache(booksByTitle.get(0).getId()));
 		}
 		
-		System.out.println("Country code for BE: " + cacheEJB.getCountryCode("BE"));
+		System.out.println("Country code for BE: " + cacheLocal.getCountryCode("BE"));
 		
 		System.exit(0);
 	}
