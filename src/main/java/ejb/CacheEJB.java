@@ -39,7 +39,7 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 	private CountryCodeEJB countryCodeEJB;
 
 	@Override
-	public synchronized void addToCache(Long id, Object object) {
+	public void addToCache(Long id, Object object) {
 		if (!cache.containsKey(id))
 			cache.put(id, object);
 
@@ -54,7 +54,7 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 	}
 
 	@Override
-	public synchronized void removeFromCache(Long id) {
+	public void removeFromCache(Long id) {
 		if (cache.containsKey(id))
 			cache.remove(id);
 	}

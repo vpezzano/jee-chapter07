@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+/*
+ * For this interface, method parameters are passed by reference.
+ */
 @Local
 public interface BookLocal {
 	Book findBookById(Long id);

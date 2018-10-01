@@ -20,7 +20,8 @@ import model.ItemRemote;
  * before returning. However, a stateful session bean does not have this restriction.
  */
 @Stateful
-// Retain an idle EJB for the time specified here
+// Retain an idle EJB for the period specified here; this represents the duration the bean is permitted
+// to remain idle (not receiving any client invocations) before being removed by the container.
 @StatefulTimeout(value = 60, unit = TimeUnit.SECONDS)
 public class ItemEJB implements ItemRemote {
 	private List<Item> cartItems = new ArrayList<>();
@@ -65,6 +66,9 @@ public class ItemEJB implements ItemRemote {
 		cartItems.clear();
 	}
 
+	/*
+	 * After the checkout is invoked, the bean instance is permanently removed from memory.
+	 */
 	@Remove
 	public void checkout() {
 		// Do some business logic
