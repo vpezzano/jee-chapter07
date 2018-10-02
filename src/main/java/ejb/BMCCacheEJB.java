@@ -1,52 +1,49 @@
 package ejb;
 
+import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.AccessTimeout;
+import javax.ejb.ConcurrencyManagement;
+import javax.ejb.ConcurrencyManagementType;
 import javax.ejb.DependsOn;
 import javax.ejb.EJB;
-import javax.ejb.Lock;
-import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
+import model.BMCCacheLocal;
+import model.BMCCacheRemote;
 import model.Book;
-import model.CacheLocal;
-import model.CacheRemote;
 
 /*
+ * CMC: Container-managed concurrency; it's the default, and uses LockType to control concurrent access.
+ * BMC: Bean-managed concurrency; the synchronization responsibility is delegated to the bean.
  * @Singleton instructs the container to produce a single instance of a stateless bean. If we change
  * the AccessTimeout value to 0, no parallel access will be allowed. If we change it to -1, a client
  * issuing a parallel request will be able to wait infinite time.
- * Singleton EJBs can be initialized at startup, be chained together, and have their concurrency
- * access customized.
+ * In this example, we are using BMC, so we need to explicitly synchronize the methods. The annotation
+ * @AccessTimeout is usable also for BMC.
  */
 @Singleton
 @Startup
 @DependsOn("CountryCodeEJB")
-// The specification of the LockType is redundant here, because LockType.WRITE
-// is the default; we also don't need to specify the keyword synchronized on
-// each method, because of the LockType
-@Lock(LockType.WRITE)
+@ConcurrencyManagement(ConcurrencyManagementType.BEAN)
 @AccessTimeout(value = 5, unit = TimeUnit.SECONDS)
-public class CacheEJB implements CacheRemote, CacheLocal {
+public class BMCCacheEJB implements BMCCacheRemote, BMCCacheLocal {
 	@PersistenceContext(unitName = "chapter07PU")
 	private EntityManager em;
-	// Use a ConcurrentHashMap, to prevent problems with the methods
-	// marked with @Lock(LockType.READ)
-	private Map<Long, Object> cache = new ConcurrentHashMap<>();
+	private Map<Long, Object> cache = new HashMap<>();
 
 	@EJB
 	private CountryCodeEJB countryCodeEJB;
 
 	@Override
-	public void addToCache(Long id, Object object) {
+	public synchronized void addToCache(Long id, Object object) {
 		if (!cache.containsKey(id))
 			cache.put(id, object);
 
@@ -60,19 +57,14 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 		}
 	}
 
-	/*
-	 * No concurrent access is allowed here
-	 */
-	@AccessTimeout(0)
 	@Override
-	public void removeFromCache(Long id) {
+	public synchronized void removeFromCache(Long id) {
 		if (cache.containsKey(id))
 			cache.remove(id);
 	}
 
 	@Override
-	@Lock(LockType.READ)
-	public Object getFromCache(Long id) {
+	public synchronized Object getFromCache(Long id) {
 		if (cache.containsKey(id))
 			return cache.get(id);
 		else
@@ -80,8 +72,7 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 	}
 
 	@Override
-	@Lock(LockType.READ)
-	public String getCountryCode(String country) {
+	public synchronized String getCountryCode(String country) {
 		return countryCodeEJB.getByCountry(country);
 	}
 
@@ -91,12 +82,11 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 		for (Book book : query.getResultList()) {
 			cache.put(book.getId(), book);
 		}
-		System.out.println("After init cache size: " + cache.size());
 	}
 
 	@Override
-	public Map<Long, Object> getCache() {
-		Map<Long, Object> cacheCopy = new ConcurrentHashMap<>();
+	public synchronized Map<Long, Object> getCache() {
+		Map<Long, Object> cacheCopy = new HashMap<>();
 		cacheCopy.putAll(cache);
 		return cacheCopy;
 	}

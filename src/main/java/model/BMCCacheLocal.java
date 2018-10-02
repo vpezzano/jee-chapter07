@@ -1,11 +1,9 @@
 package model;
 
-import java.util.Map;
+import javax.ejb.Local;
 
-import javax.ejb.Remote;
-
-@Remote
-public interface CacheRemote {
+@Local
+public interface BMCCacheLocal {
 	void addToCache(Long id, Object object);
 
 	void removeFromCache(Long id);
@@ -13,6 +11,4 @@ public interface CacheRemote {
 	Object getFromCache(Long id);
 
 	String getCountryCode(String country);
-	
-	Map<Long, Object> getCache();
 }

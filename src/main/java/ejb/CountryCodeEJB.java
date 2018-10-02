@@ -8,8 +8,9 @@ import javax.ejb.Singleton;
 
 /*
  * @Singleton instructs the container to produce a single instance of a stateless bean.
- * @Startup is not required here, because this is a dependency for CacheEJB, and so it
- * will be initialized before CacheEJB. 
+ * @Startup is not required here, because CacheEJB is annotated with @Startup and, 
+ * as this is a dependency for CacheEJB, it will be initialized before CacheEJB, because
+ * the init method is annotated with @PostConstruct.
  */
 @Singleton
 public class CountryCodeEJB {

@@ -37,7 +37,7 @@ public class Main {
 		// the container. In this case, arguments to methods can be passed by reference
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		BookLocal bookLocal = (BookLocal) ctx.lookup("java:global/classes/BookEJB!model.BookLocal");
-		Book book = new Book("Java 8", 50f, "Java 8 main features, edition " + formatter.format(new Date()), "1234-ABCD", 300, true);
+		Book book = new Book("Java 8", 50f, "Java 8 main features, edition " + formatter.format(new Date()), 300, true);
 		bookLocal.createBook(book);
 		System.out.println("Found: " + bookLocal.findBookById(book.getId()));
 

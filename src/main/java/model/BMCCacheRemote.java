@@ -5,7 +5,7 @@ import java.util.Map;
 import javax.ejb.Remote;
 
 @Remote
-public interface CacheRemote {
+public interface BMCCacheRemote {
 	void addToCache(Long id, Object object);
 
 	void removeFromCache(Long id);

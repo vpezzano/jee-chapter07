@@ -8,6 +8,7 @@ import java.util.Properties;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
+import model.BMCCacheRemote;
 import model.BookRemote;
 import model.BookRemoteLegacy;
 import model.CacheRemote;
@@ -66,11 +67,15 @@ public class RemoteMain {
 					itemRemote.getNumberOfItems() + " items currently in the basket: " + itemRemote.getItems());
 			System.out.println("Price: " + itemRemote.getTotal());
 
+			itemRemote.checkout();
+			
 			CacheRemote cacheRemote = (CacheRemote) ctx.lookup("java:global/chapter07/CacheEJB!model.CacheRemote");
 			cacheRemote.addToCache(System.currentTimeMillis(), "Cache");
-
-			itemRemote.checkout();
-
+			System.out.println("After addToCache, cache: " + cacheRemote.getCache());
+			
+			BMCCacheRemote bmcCacheRemote = (BMCCacheRemote) ctx.lookup("java:global/chapter07/BMCCacheEJB!model.BMCCacheRemote");
+			bmcCacheRemote.addToCache(System.currentTimeMillis(), "Cache");
+			System.out.println("After addToCache, cache: " + bmcCacheRemote.getCache());
 		}
 	}
 }
