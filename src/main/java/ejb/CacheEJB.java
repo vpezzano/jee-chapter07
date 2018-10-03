@@ -19,6 +19,7 @@ import javax.persistence.TypedQuery;
 import model.Book;
 import model.CacheLocal;
 import model.CacheRemote;
+import model.CountryCodeLocal;
 
 /*
  * @Singleton instructs the container to produce a single instance of a stateless bean. If we change
@@ -32,7 +33,7 @@ import model.CacheRemote;
 @DependsOn("CountryCodeEJB")
 // The specification of the LockType is redundant here, because LockType.WRITE
 // is the default; we also don't need to specify the keyword synchronized on
-// each method, because of the LockType
+// each method, because of the LockType.
 @Lock(LockType.WRITE)
 @AccessTimeout(value = 5, unit = TimeUnit.SECONDS)
 public class CacheEJB implements CacheRemote, CacheLocal {
@@ -42,8 +43,11 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 	// marked with @Lock(LockType.READ)
 	private Map<Long, Object> cache = new ConcurrentHashMap<>();
 
+	/*
+	 * It's not required to have the bean here, we can use a local reference.
+	 */
 	@EJB
-	private CountryCodeEJB countryCodeEJB;
+	private CountryCodeLocal countryCodeLocal;
 
 	@Override
 	public void addToCache(Long id, Object object) {
@@ -82,7 +86,7 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 	@Override
 	@Lock(LockType.READ)
 	public String getCountryCode(String country) {
-		return countryCodeEJB.getByCountry(country);
+		return countryCodeLocal.getByCountry(country);
 	}
 
 	@PostConstruct
@@ -95,9 +99,7 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 	}
 
 	@Override
-	public Map<Long, Object> getCache() {
-		Map<Long, Object> cacheCopy = new ConcurrentHashMap<>();
-		cacheCopy.putAll(cache);
-		return cacheCopy;
+	public String getCacheImage() {
+		return cache.toString();
 	}
 }

@@ -4,7 +4,10 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.PostConstruct;
+import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
+
+import model.CountryCodeLocal;
 
 /*
  * @Singleton instructs the container to produce a single instance of a stateless bean.
@@ -13,9 +16,11 @@ import javax.ejb.Singleton;
  * the init method is annotated with @PostConstruct.
  */
 @Singleton
-public class CountryCodeEJB {
+@LocalBean
+public class CountryCodeEJB implements CountryCodeLocal {
 	private Map<String, String> countryCodes = new ConcurrentHashMap<>();
 
+	@Override
 	public String getByCountry(String country) {
 		return countryCodes.get(country);
 	}

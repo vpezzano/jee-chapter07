@@ -13,4 +13,6 @@ public interface BookRemote {
 	List<Book> findAllBooks();
 
 	String getRemoteMessage();
+	
+	String getContextInfo();
 }

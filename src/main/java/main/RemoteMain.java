@@ -70,8 +70,12 @@ public class RemoteMain {
 			itemRemote.checkout();
 			
 			CacheRemote cacheRemote = (CacheRemote) ctx.lookup("java:global/chapter07/CacheEJB!model.CacheRemote");
-			cacheRemote.addToCache(System.currentTimeMillis(), "Cache");
-			System.out.println("After addToCache, cache: " + cacheRemote.getCache());
+			System.out.println("Country code for BE: " + cacheRemote.getCountryCode("BE"));
+			
+			long key = System.currentTimeMillis();
+			cacheRemote.addToCache(key, "Cache");
+			System.out.println("After addToCache, cache for " + key + ": " + cacheRemote.getFromCache(key));
+			System.out.println("After addToCache, cache image: " + cacheRemote.getCacheImage());
 			
 			BMCCacheRemote bmcCacheRemote = (BMCCacheRemote) ctx.lookup("java:global/chapter07/BMCCacheEJB!model.BMCCacheRemote");
 			bmcCacheRemote.addToCache(System.currentTimeMillis(), "Cache");

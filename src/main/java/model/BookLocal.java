@@ -14,4 +14,6 @@ public interface BookLocal {
 	List<Book> findBookByTitle(String title);
 	
 	Book createBook(Book book);
+	
+	String getContextInfo();
 }

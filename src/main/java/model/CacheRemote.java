@@ -1,7 +1,5 @@
 package model;
 
-import java.util.Map;
-
 import javax.ejb.Remote;
 
 @Remote
@@ -14,5 +12,5 @@ public interface CacheRemote {
 
 	String getCountryCode(String country);
 	
-	Map<Long, Object> getCache();
+	String getCacheImage();
 }

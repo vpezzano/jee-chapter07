@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
@@ -17,6 +19,7 @@ import model.BookLocal;
 import model.BookLocalLegacy;
 import model.BookRemote;
 import model.CacheLocal;
+import model.OrderLocal;
 
 public class Main {
 	/*
@@ -26,7 +29,7 @@ public class Main {
 	 * opted out. More info on Session Beans can be found here:
 	 * "https://docs.oracle.com/cd/E11035_01/workshop102/ejb/session/conGettingStartedWithSessionBeans.html"
 	 */
-	public static void main(String[] args) throws NamingException {
+	public static void main(String[] args) throws NamingException, InterruptedException, ExecutionException {
 		// Initialize embedded container
 		Map<String, Object> properties = new HashMap<>();
 		properties.put(EJBContainer.MODULES, new File("target/classes"));
@@ -39,8 +42,10 @@ public class Main {
 		BookLocal bookLocal = (BookLocal) ctx.lookup("java:global/classes/BookEJB!model.BookLocal");
 		Book book = new Book("Java 8", 50f, "Java 8 main features, edition " + formatter.format(new Date()), 300, true);
 		bookLocal.createBook(book);
+		
 		System.out.println("Found: " + bookLocal.findBookById(book.getId()));
-
+		System.out.println("Context info: " + bookLocal.getContextInfo());
+		
 		// The interface BookRemote should be used for clients running in a different VM
 		BookRemote bookRemote = (BookRemote) ctx.lookup("java:global/classes/BookEJB!model.BookRemote");
 		System.out.println("Remote message: " + bookRemote.getRemoteMessage());
@@ -64,6 +69,21 @@ public class Main {
 		}
 		
 		System.out.println("Country code for BE: " + cacheLocal.getCountryCode("BE"));
+		
+		OrderLocal orderLocal = (OrderLocal) ctx.lookup("java:global/classes/OrderEJB!model.OrderLocal");
+		orderLocal.sendEmailOrderComplete(null, null);
+		System.out.println("Invocation of sendEmailOrderComplete terminated.");
+		orderLocal.printOrder(null);
+		System.out.println("Invocation of printOrder terminated.");
+		
+		Future<Integer> status = orderLocal.sendOrderToWorkflow(null);
+		System.out.println("Invocation of sendOrderToWorkflow terminated.");
+		while (!status.isDone()) {
+			System.out.println("Waiting for result of sendOrderToWorkflow...");
+			Thread.sleep(1000);
+		}
+		
+		System.out.println("Status of sendOrderToWorkflow: " + status.get());
 		
 		System.exit(0);
 	}
