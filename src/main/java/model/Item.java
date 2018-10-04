@@ -15,11 +15,12 @@ public class Item implements Serializable {
 	private String name;
 	private String description;
 	private Float price;
+	private String currency;
 
 	public Item() {
-		
+
 	}
-	
+
 	public Item(String name, String description, Float price) {
 		this.name = name;
 		this.description = description;
@@ -56,6 +57,14 @@ public class Item implements Serializable {
 
 	public void setPrice(Float price) {
 		this.price = price;
+	}
+
+	public String getCurrency() {
+		return currency;
+	}
+
+	public void setCurrency(String currency) {
+		this.currency = currency;
 	}
 
 	@Override

@@ -30,7 +30,6 @@ public class RemoteMain {
 			InitialContext ctx = new InitialContext(props);
 			BookRemote bookRemote = (BookRemote) ctx.lookup("java:global/chapter07/BookEJB!model.BookRemote");
 			System.out.println("Using portable JNDI name: " + bookRemote.getRemoteMessage());
-
 			System.out.println("Using portable JNDI name: " + bookRemote.findAllBooks());
 
 			// The following uses a non portable JNDI name,
@@ -62,7 +61,6 @@ public class RemoteMain {
 			}
 
 			itemRemote.addItem(item2);
-
 			System.out.println(
 					itemRemote.getNumberOfItems() + " items currently in the basket: " + itemRemote.getItems());
 			System.out.println("Price: " + itemRemote.getTotal());

@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 
-import model.CountryCodeLocal;
+import model.CountryCodeRemote;
 
 /*
  * @Singleton instructs the container to produce a single instance of a stateless bean.
@@ -17,7 +17,7 @@ import model.CountryCodeLocal;
  */
 @Singleton
 @LocalBean
-public class CountryCodeEJB implements CountryCodeLocal {
+public class CountryCodeEJB implements CountryCodeRemote {
 	private Map<String, String> countryCodes = new ConcurrentHashMap<>();
 
 	@Override

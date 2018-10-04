@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ejb-jar xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/ejb-jar_3_2.xsd"
+	version="3.2">
+	<enterprise-beans>
+		<session>
+			<ejb-name>ItemEJBXml</ejb-name>
+			<remote>model.ItemRemoteXml</remote>
+			<local>model.ItemLocalXml</local>
+			<business-local>model.ItemLocalXml</business-local>
+			<business-remote>model.ItemRemoteXml</business-remote>
+			<local-bean />
+			<ejb-class>ejb.ItemEJBXml</ejb-class>
+			<session-type>Stateless</session-type>
+			<transaction-type>Container</transaction-type>
+		</session>
+		<session>
+			<ejb-name>ItemEJB</ejb-name>
+			<env-entry>
+				<env-entry-name>currencyEntry</env-entry-name>
+				<env-entry-type>java.lang.String</env-entry-type>
+				<env-entry-value>Euros</env-entry-value>
+			</env-entry>
+			<env-entry>
+				<env-entry-name>changeRateEntry</env-entry-name>
+				<env-entry-type>java.lang.Float</env-entry-type>
+				<env-entry-value>0.80</env-entry-value>
+			</env-entry>
+		</session>
+	</enterprise-beans>
+</ejb-jar>

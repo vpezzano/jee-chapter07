@@ -12,6 +12,7 @@ import javax.ejb.Lock;
 import javax.ejb.LockType;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -19,7 +20,7 @@ import javax.persistence.TypedQuery;
 import model.Book;
 import model.CacheLocal;
 import model.CacheRemote;
-import model.CountryCodeLocal;
+import model.CountryCodeRemote;
 
 /*
  * @Singleton instructs the container to produce a single instance of a stateless bean. If we change
@@ -45,14 +46,17 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 
 	/*
 	 * It's not required to have the bean here, we can use a local reference.
+	 * 
+	 * @Inject can also be used here; this allows using alternatives.
 	 */
 	@EJB
-	private CountryCodeLocal countryCodeLocal;
+	private CountryCodeRemote countryCodeRemote;
 
 	@Override
 	public void addToCache(Long id, Object object) {
-		if (!cache.containsKey(id))
+		if (!cache.containsKey(id)) {
 			cache.put(id, object);
+		}
 
 		// This is used to text ConcurrentAccessTimeoutException. If we run 2 clients
 		// simultaneously, the second one will not be able to acquire the lock within
@@ -86,7 +90,7 @@ public class CacheEJB implements CacheRemote, CacheLocal {
 	@Override
 	@Lock(LockType.READ)
 	public String getCountryCode(String country) {
-		return countryCodeLocal.getByCountry(country);
+		return countryCodeRemote.getByCountry(country);
 	}
 
 	@PostConstruct
