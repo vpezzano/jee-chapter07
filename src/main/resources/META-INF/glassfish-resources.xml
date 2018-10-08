@@ -10,7 +10,7 @@
 		<property name="user" value="root" />
 		<property name="password" value="root" />
 		<property name="url"
-			value="jdbc:mysql://localhost:3306/spring-jpa" />
+			value="jdbc:mysql://localhost:3306/spring-jpa?useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC" />
 	</jdbc-connection-pool>
 	<jdbc-resource enabled="true"
 		jndi-name="jdbc/mysqldb" object-type="user"

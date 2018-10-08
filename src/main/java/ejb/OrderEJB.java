@@ -15,7 +15,6 @@ import model.OrderLocal;
 /**
  * 
  * @Asynchronous can also be applied at class level; in this case, it applies to all methods.
- *
  */
 @Stateless
 public class OrderEJB implements OrderLocal {
