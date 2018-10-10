@@ -11,13 +11,17 @@ import javax.ejb.Stateless;
 import model.Customer;
 import model.Order;
 import model.OrderLocal;
+import model.OrderRemote;
 
 /**
- * 
  * @Asynchronous can also be applied at class level; in this case, it applies to all methods.
  */
 @Stateless
-public class OrderEJB implements OrderLocal {
+public class OrderEJB implements OrderLocal, OrderRemote {
+	public OrderEJB() {
+		System.out.println("Created instance of OrderEJB.");
+	}
+	
 	@Resource
 	private SessionContext ctx;
 

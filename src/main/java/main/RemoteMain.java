@@ -14,6 +14,7 @@ import model.BookRemoteLegacy;
 import model.CacheRemote;
 import model.Item;
 import model.ItemRemote;
+import model.OrderRemote;
 
 public class RemoteMain {
 	public static void main(String[] args) throws FileNotFoundException, IOException, NamingException {
@@ -78,6 +79,9 @@ public class RemoteMain {
 			BMCCacheRemote bmcCacheRemote = (BMCCacheRemote) ctx.lookup("java:global/chapter07/BMCCacheEJB!model.BMCCacheRemote");
 			bmcCacheRemote.addToCache(System.currentTimeMillis(), "Cache");
 			System.out.println("After addToCache, cache: " + bmcCacheRemote.getCache());
+			
+			OrderRemote orderRemote = (OrderRemote) ctx.lookup("java:global/chapter07/OrderEJB!model.OrderRemote");
+			orderRemote.sendEmailOrderComplete(null, null);
 		}
 	}
 }
